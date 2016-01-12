@@ -3,12 +3,16 @@
 <div class="row">
 	<div id="editor_container" class="col-md-6">
 		<div id="editor">
-		function foo(items) {
-		    var x = "All this is syntax highlighted";
-		    return x;
-		}
+function foo(items) {
+    var x = "All this is syntax highlighted";
+    return x;
+}
+		</div>
+		<div style="margin-top:10px">
+			<button id="run_button">Run ▶</button>
 		</div>
 	</div>
+
 
 	<div id="canvas_div" class="col-md-6">
 		<canvas id="c"></canvas>
@@ -19,19 +23,58 @@
 
 
 <script>
+
+function line(x0, y0, x1, y1, thickness, color) {
+	context.strokeStyle = color;
+	context.lineWidth = thickness;
+	context.beginPath();
+	context.moveTo(x0, y0);
+	context.lineTo(x1, y1);
+	context.stroke();
+}
+
+
+function rect(x0, y0, x1, y1, thickness, color) {
+	context.strokeStyle = color;
+	context.lineWidth = thickness;
+	context.beginPath();
+	context.rect(x0, y0, x1 - x0, y1 - y0);
+	context.stroke();
+}
+
+function fillRect(x0, y0, x1, y1, color) {
+	context.fillStyle = color;
+	context.fillRect(x0, y0, x1 - x0, y1 - y0);
+}
+
+
+
+
+
 $(document).ready(function() {
 	var canvas = document.getElementById("c");
 	canvas.width = $("#canvas_div").width();
 	canvas.height = $("#canvas_div").height();
 
-    var editor = ace.edit("editor");
+    window.editor = ace.edit("editor");
     editor.setTheme("ace/theme/monokai");
     editor.getSession().setMode("ace/mode/javascript");
 
+	editor.setShowPrintMargin(false);
+	editor.setShowFoldWidgets(false);
+
+
 	var c=document.getElementById("c");
 	var ctx=c.getContext("2d");
+	window.context = ctx;
 	ctx.fillStyle="red";
 	ctx.fillRect(100,100,10,10);
+
+
+	$("#run_button").click(function() {
+		eval("(function(){" + editor.getValue() + "})();");
+	});
+
 });
 
 
