@@ -19,10 +19,7 @@ var RedisStore = require('connect-redis')(session);	// For storing sessions.
 
 // Controllers
 var userController = require('./controllers/user');
-
-// Game Server
-//var gameServer = require('./app/gameserver.js');
-//gameServer.listen(app, 5001);
+var adamController = require('./controllers/adam');
 
 app.set('port', (process.env.PORT || 5000));
 
@@ -70,7 +67,7 @@ app.use(function(req, res, next) {
 
 
 // Routes
-// app.get('/', aController.index);
+app.get('/', adamController.index);
 
 // User account routes
 /**
